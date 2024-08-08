@@ -1,3 +1,6 @@
+# 版权所有 © 2024 qilimary. 保留所有权利。
+# 本代码仅供授权使用，不得未经授权复制、分发或修改。
+
 # -*- coding: utf-8 -*-
 from typing import List, Tuple, Dict
 import random
