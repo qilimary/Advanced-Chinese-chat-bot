@@ -1,0 +1,58 @@
+name: Move Screenshots
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  move-screenshots:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Move root images into screenshots folder
+        shell: bash
+        run: |
+          mkdir -p screenshots
+
+          moved_count=0
+
+          while IFS= read -r -d '' file; do
+            filename="${file#./}"
+
+            echo "Moving: $filename"
+            git mv -- "$file" "screenshots/$filename"
+
+            moved_count=$((moved_count + 1))
+          done < <(
+            find . -maxdepth 1 -type f \
+              \( \
+                -iname '*.jpg' \
+                -o -iname '*.jpeg' \
+                -o -iname '*.png' \
+                -o -iname '*.webp' \
+              \) \
+              -print0
+          )
+
+          echo "Moved $moved_count image file(s)."
+
+      - name: Commit moved images
+        shell: bash
+        run: |
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "No root image files were found."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+          git commit -m "Move screenshots into screenshots folder"
+          git push
