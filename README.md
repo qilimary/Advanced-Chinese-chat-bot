@@ -99,7 +99,7 @@
 
 完整的逐图说明与图片展示见：
 
-### [查看完整能力展示：SHOWCASE.md](SHOWCASE.md)
+### [查看聊天展示：SHOWCASE.md](SHOWCASE.md)
 
 其中明确区分：
 
